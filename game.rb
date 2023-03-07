@@ -1,55 +1,54 @@
+require_relative "black_jeck_core"
+require_relative "player"
+require_relative "diler"
 
-
-
-
-# puts @cards[51]
-
-class Game
-  attr_reader :deck_cards
+class Game < Black_jeck_core
+  attr_reader :player, :diler
+  attr_accessor :move_plaers
+  
   def initialize
-    @deck_cards = []
+    super
+    puts "Write name"
+    paler_name = gets.chomp
+    @player = Player.new(paler_name)
+    @diler = Diler.new()
+    @move_plaers =  {@diler => false, @player => false}
+  end
+  
+  def raund_start
     full_deck_cards()
+    @player.add_card(get_card())
+    @player.add_card(get_card())
+    @diler.add_card(get_card())
+    @diler.add_card(get_card())
+    @bank = 20
+    @player.send_money(10)
+    @diler.send_money(10)
   end
 
-  def get_card
-    card = @deck_cards.sample
-    @deck_cards.delete(card)
-    card
+  def show_card(p1, p2)
+    puts_card(@diler, p1)
+    puts_card(@player, p2)
   end
 
-  private 
-  def full_deck_cards
-    (2..10).each do |i|
-      %w[♠ ♥ ♦ ♣].each do |i2|
-        @deck_cards << [i.to_s + i2 , i]
-      end
-    end
+  def puts_card(player, close_card = true)
+    sum = 0
+    player.hend.each {|i| sum += i[1]}
+    puts "#{player.name} card on hend #{close_card ? "[*]" * player.hend.count: player.hend.inspect } = #{close_card ? "*" : sum}"
+  end
 
-    %w[J Q K A].each do |i|
-      %w[♠ ♥ ♦ ♣].each do |i2|
-          @deck_cards << [i + i2 , i == "A" ? 11 : 10]
-      end
+  def make_move(player)
+    puts ""
+    puts "Write 1 if want open cards" 
+    puts "Write 2 if want take card" if player.hend.count < 3
+    puts "Write 3 if want make to pass" if player.hend.count < 3 || @move_plaers[player] == 3
+    choose_action = player.name == "Diler" ? player.move_action(self) : gets.chomp
+    case choose_action
+      when '1'
+        @move_plaers[player] = 3
+      when '2'
+        player.add_card(get_card())        
     end
+  
   end
 end
-
-class Player
-  attr_reader: hend
-  attr_reader: purse
-
-  def add_card
-
-  end
-
-  def fold
-
-  end
-end
-
-
-a = Game.new
-
-b = a.get_card()
-
-puts b
-puts a.deck_cards.inspect
