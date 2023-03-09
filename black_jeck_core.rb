@@ -1,4 +1,4 @@
-class Black_jeck_core
+class BlackJeckCore
   attr_accessor :deck_cards, :bank
 
   def initialize

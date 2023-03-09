@@ -4,7 +4,7 @@ class Interface
 
   def initialize
     @game = Game.new
-    @game.raund_start()
+    @game.start_round()
     select_do()
   end
   
@@ -16,10 +16,9 @@ class Interface
   def select_do!  
     loop do
       puts "Game is start"
-      @game.show_card(true, false)
+      @game.show_cards(true)
       @game.make_move(@game.player)
-      @game.make_move(@game.diler)# write code for diler
-      a = gets.chomp
+      @game.make_move(@game.diler)      
     end
   end
 end
