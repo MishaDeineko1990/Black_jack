@@ -24,5 +24,6 @@ class Diler < Player
     end
 
     take_card && self.hend.count < 3 ? self.add_card(game.get_card) : nil
+    game.decision_finish_raund[@diler] = true
   end
 end

@@ -4,7 +4,7 @@ require_relative 'diler'
 
 class Game < BlackJeckCore
   attr_reader :player, :diler
-  attr_accessor :move_players
+  attr_accessor :move_players, :decision_finish_raund 
 
   def initialize
     super
@@ -20,9 +20,9 @@ class Game < BlackJeckCore
     full_deck_cards
     2.times { @player.add_card(get_card) }
     2.times { @diler.add_card(get_card) }
-    @bank = 20
     @player.send_money(10)
     @diler.send_money(10)
+    @bank = 20
   end
 
   def show_cards(hide_diler_cards)
@@ -54,8 +54,10 @@ class Game < BlackJeckCore
       puts '-----------------------'
       puts 'Write 1 to open cards'
       puts 'Write 2 to take card' if player.hend.count < 3
-      puts 'Write 3 to pass' if player.hend.count < 3 || @count_pass < 1
+      puts 'Write 3 to pass' if player.hend.count < 3 || @count_pass != 1
       choice = gets.chomp
+
+      finish_raund() if finish_raund?
 
       case choice
       when '1'
@@ -74,14 +76,58 @@ class Game < BlackJeckCore
   end
 
   def finish_raund?
-
+    return true if @player.hend.count == 3 && @diler.hend.count == 3
+    return true if @decision_finish_raund[@diler] == true && @decision_finish_raund[@player] == true
+    return true if @player.count_pionts > 21
+    return false
   end
 
-  def finish_raund
+  def finish_raund()
+    case winner()
+    when 'draw'
+      @player.get_money(@bank / 2)
+      @diler.get_money(@bank / 2)
+    when @player
+      @player.get_money(@bank) 
+    else
+      @diler.get_money(@bank / 2) 
+    end
 
+    output_resault() 
+    start_round()
   end
 
-  def finish_game?
+  def winner
+    if @player.count > 21
+      @diler
+    elsif @player.count == @diler.count
+      'draw'
+    elsif 21 - @player.count  < 21 - @diler.count
+      @player
+    else
+      @diler
+    end
+  end
+
+  def output_resault()
+    case winner()
+    when 'draw'
+      puts '-----------Draw-------------'
+      wallet_plaers()      
+    when @player
+      puts '-----------YOU WINN-------------'
+      wallet_plaers() 
+    else
+      puts '-----------Diler win-------------'
+      wallet_plaers()  
+    end
+
+    def wallet_plaers
+      puts "#{@diler.name} have on wallet #{@diler.wallet}$"    
+      puts "#{@player.name} have on wallet #{@player.wallet}$"
+      puts '----------------------------'
+    end
+
 
   end
 

@@ -7,6 +7,12 @@ class Player
     @hend = []
   end
 
+  def count_pionts
+    points = 0
+    @hend.each {|i| points += i[1]}
+    points  
+  end
+
   def add_card(card)
     @hend << card
   end
