@@ -17,7 +17,7 @@ class Game < BlackJeckCore
   end
 
   def start_round
-    full_deck_cards
+    full_deck_cards()
     2.times { @player.add_card(get_card) }
     2.times { @diler.add_card(get_card) }
     @player.send_money(10)
@@ -58,10 +58,11 @@ class Game < BlackJeckCore
       choice = gets.chomp
 
       finish_raund() if finish_raund?
+      puts "finish_raund? #{finish_raund?}"
 
       case choice
       when '1'
-        @decision_finish_raund[player] = true
+        @decision_finish_raund[@player] = true
         break
       when '2'
         player.add_card(get_card)
@@ -76,6 +77,8 @@ class Game < BlackJeckCore
   end
 
   def finish_raund?
+    puts "@decision_finish_raund[@diler] #{@decision_finish_raund[@diler]}"
+    puts "@decision_finish_raund[@player] #{@decision_finish_raund[@player]}"
     return true if @player.hend.count == 3 && @diler.hend.count == 3
     return true if @decision_finish_raund[@diler] == true && @decision_finish_raund[@player] == true
     return true if @player.count_pionts > 21
@@ -90,7 +93,7 @@ class Game < BlackJeckCore
     when @player
       @player.get_money(@bank) 
     else
-      @diler.get_money(@bank / 2) 
+      @diler.get_money(@bank) 
     end
 
     output_resault() 
@@ -98,14 +101,14 @@ class Game < BlackJeckCore
   end
 
   def winner
-    if @player.count > 21
-      @diler
-    elsif @player.count == @diler.count
-      'draw'
-    elsif 21 - @player.count  < 21 - @diler.count
-      @player
+    if @player.count_pionts > 21
+      return @diler
+    elsif @player.count_pionts == @diler.count_pionts
+      return 'draw'
+    elsif 21 - @player.count_pionts  < 21 - @diler.count_pionts
+      return @player
     else
-      @diler
+      return @diler
     end
   end
 
@@ -119,16 +122,14 @@ class Game < BlackJeckCore
       wallet_plaers() 
     else
       puts '-----------Diler win-------------'
-      wallet_plaers()  
+      wallet_plaers()
     end
+  end
 
-    def wallet_plaers
-      puts "#{@diler.name} have on wallet #{@diler.wallet}$"    
-      puts "#{@player.name} have on wallet #{@player.wallet}$"
-      puts '----------------------------'
-    end
-
-
+  def wallet_plaers
+    puts "#{@diler.name} have on wallet #{@diler.wallet}$"    
+    puts "#{@player.name} have on wallet #{@player.wallet}$"
+    puts '----------------------------'
   end
 
   # додати рышення закынчити раунд

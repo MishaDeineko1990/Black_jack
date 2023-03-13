@@ -6,6 +6,7 @@ class Diler < Player
   end
 
   def move_action(game)
+    puts "move_action is worck dsler"
     take_card = false
 
     @points = 0
