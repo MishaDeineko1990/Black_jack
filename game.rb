@@ -4,7 +4,7 @@ require_relative 'diler'
 
 class Game < BlackJeckCore
   attr_reader :player, :diler
-  attr_accessor :move_players, :decision_finish_raund 
+  attr_accessor :move_players, :decision_finish_raund_diler
 
   def initialize
     super
@@ -12,12 +12,15 @@ class Game < BlackJeckCore
     player_name = gets.chomp
     @player = Player.new(player_name)
     @diler = Diler.new
-    @decision_finish_raund = {@diler => false, @player => false}
+    @decision_finish_raund_diler =  false
+    @decision_finish_raund_player =  false
     @count_pass = 0
   end
 
   def start_round
     full_deck_cards()
+    @player.clean_hend
+    @diler.clean_hend
     2.times { @player.add_card(get_card) }
     2.times { @diler.add_card(get_card) }
     @player.send_money(10)
@@ -26,7 +29,7 @@ class Game < BlackJeckCore
   end
 
   def show_cards(hide_diler_cards)
-    puts "#{@diler.name} cards on hand: #{cards_on_hand(@diler.hend, @diler.name == 'Diler' ? hide_diler_cards : false)}"
+    puts "#{@diler.name} cards on hand: #{cards_on_hand(@diler.hend, @diler.name == 'Diler' ? true : false)}"
     puts "#{@player.name} cards on hand: #{cards_on_hand(@player.hend)}"
   end
   
@@ -47,40 +50,39 @@ class Game < BlackJeckCore
 
   def make_move(player)
     return player.move_action(self) if player.name == 'Diler'
+   
+    puts ''
+    puts 'You step!!!'
+    puts '-----------------------'
+    puts 'Write 1 to open cards'
+    puts 'Write 2 to take card' if player.hend.count < 3
+    puts 'Write 3 to pass' if player.hend.count < 3 || @count_pass != 1
+    choice = gets.chomp
 
-    loop do
-      puts ''
-      puts 'You step!!!'
-      puts '-----------------------'
-      puts 'Write 1 to open cards'
-      puts 'Write 2 to take card' if player.hend.count < 3
-      puts 'Write 3 to pass' if player.hend.count < 3 || @count_pass != 1
-      choice = gets.chomp
+    finish_raund() if finish_raund?
+    puts "finish_raund? #{finish_raund?}"
 
-      finish_raund() if finish_raund?
-      puts "finish_raund? #{finish_raund?}"
-
-      case choice
-      when '1'
-        @decision_finish_raund[@player] = true
-        break
-      when '2'
-        player.add_card(get_card)
-        break
-      when '3'
-        @count_pass = 1
-        break
-      else
-        puts 'Invalid input. Please try again.'
-      end
+    case choice
+    when '1'
+      @decision_finish_raund_player = true
+      return
+    when '2'
+      player.add_card(get_card)
+      return
+    when '3'
+      @count_pass = 1
+      return
+    else
+      puts 'Invalid input. Please try again.'
     end
+    
   end
 
   def finish_raund?
-    puts "@decision_finish_raund[@diler] #{@decision_finish_raund[@diler]}"
-    puts "@decision_finish_raund[@player] #{@decision_finish_raund[@player]}"
+    puts "@decision_finish_raund[@diler] #{@decision_finish_raund_diler}"
+    puts "@decision_finish_raund[@player] #{@decision_finish_raund_player}"
     return true if @player.hend.count == 3 && @diler.hend.count == 3
-    return true if @decision_finish_raund[@diler] == true && @decision_finish_raund[@player] == true
+    return true if @decision_finish_raund_diler && @decision_finish_raund_player     
     return true if @player.count_pionts > 21
     return false
   end
@@ -96,7 +98,11 @@ class Game < BlackJeckCore
       @diler.get_money(@bank) 
     end
 
+
     output_resault() 
+    
+    @deck_cards = []
+
     start_round()
   end
 

@@ -12,7 +12,7 @@ class BlackJeckCore
     card
   end
 
-  private 
+  protected
     def full_deck_cards
       (2..10).each do |i|
         %w[♠ ♥ ♦ ♣].each do |i2|

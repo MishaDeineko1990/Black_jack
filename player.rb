@@ -13,6 +13,10 @@ class Player
     points  
   end
 
+  def clean_hend()
+    @hend = []
+  end
+
   def add_card(card)
     @hend << card
   end

@@ -6,6 +6,10 @@ class Diler < Player
   end
 
   def move_action(game)
+    return if game.decision_finish_raund_diler
+
+    puts "#{game}"
+
     puts "move_action is worck dsler"
     take_card = false
 
@@ -25,6 +29,6 @@ class Diler < Player
     end
 
     take_card && self.hend.count < 3 ? self.add_card(game.get_card) : nil
-    game.decision_finish_raund[@diler] = true
+    game.decision_finish_raund_diler = true
   end
 end
