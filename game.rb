@@ -15,6 +15,8 @@ class Game < BlackJeckCore
     @decision_finish_raund_diler =  false
     @decision_finish_raund_player =  false
     @count_pass = 0
+    @i = 0
+    @ii = 10
   end
 
   def start_round
@@ -50,7 +52,10 @@ class Game < BlackJeckCore
 
   def make_move(player)
     return player.move_action(self) if player.name == 'Diler'
-   
+    puts "@decision_finish_raund #{@decision_finish_raund_diler} #{@i += 1}"
+    puts "@decision_finish_raund[@player] #{@decision_finish_raund_player} #{@ii += 1}"
+    return finish_raund() if finish_raund?    
+
     puts ''
     puts 'You step!!!'
     puts '-----------------------'
@@ -59,12 +64,15 @@ class Game < BlackJeckCore
     puts 'Write 3 to pass' if player.hend.count < 3 || @count_pass != 1
     choice = gets.chomp
 
-    finish_raund() if finish_raund?
-    puts "finish_raund? #{finish_raund?}"
+    
+    puts "@decision_finish_raund #{@decision_finish_raund_diler} #{@i += 1}"
+    puts "@decision_finish_raund[@player] #{@decision_finish_raund_player} #{@ii += 1}"
+
 
     case choice
     when '1'
       @decision_finish_raund_player = true
+
       return
     when '2'
       player.add_card(get_card)
@@ -75,12 +83,13 @@ class Game < BlackJeckCore
     else
       puts 'Invalid input. Please try again.'
     end
+    finish_raund() if finish_raund?
     
   end
 
   def finish_raund?
-    puts "@decision_finish_raund[@diler] #{@decision_finish_raund_diler}"
-    puts "@decision_finish_raund[@player] #{@decision_finish_raund_player}"
+    # puts "@decision_finish_raund[@diler] #{@decision_finish_raund_diler}"
+    # puts "@decision_finish_raund[@player] #{@decision_finish_raund_player}"
     return true if @player.hend.count == 3 && @diler.hend.count == 3
     return true if @decision_finish_raund_diler && @decision_finish_raund_player     
     return true if @player.count_pionts > 21
@@ -88,6 +97,9 @@ class Game < BlackJeckCore
   end
 
   def finish_raund()
+    @decision_finish_raund_diler = false
+    @decision_finish_raund_player = false
+    show_cards(false) #??????????????????
     case winner()
     when 'draw'
       @player.get_money(@bank / 2)
@@ -119,6 +131,7 @@ class Game < BlackJeckCore
   end
 
   def output_resault()
+    
     case winner()
     when 'draw'
       puts '-----------Draw-------------'
