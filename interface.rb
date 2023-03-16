@@ -4,21 +4,26 @@ class Interface
 
   def initialize
     @game = Game.new
-    @game.start_round()
-    select_do()
+    black_jack()
   end
   
-  def select_do
-    select_do!()
+  def black_jack
+    black_jack!()
   end
 
   private 
-  def select_do!  
+  def black_jack!  
+    puts "Game is start"
+    i = 1
     loop do
-      puts "Game is start"
+      @game.start_round()
+      puts "Raund #{i}"
+      @game.finish_raund() if @game.finish_raund?      
       @game.show_cards(true)
       @game.make_move(@game.player)
-      @game.make_move(@game.diler)      
+      @game.make_move(@game.diler)
+      i += 1
+      @game.finish_raund() if @game.finish_raund?      
     end
   end
 end

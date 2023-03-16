@@ -8,9 +8,6 @@ class Diler < Player
   def move_action(game)
     return if game.decision_finish_raund_diler
 
-    puts "#{game}"
-
-    puts "move_action is worck dsler"
     take_card = false
 
     @points = 0
