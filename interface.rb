@@ -13,16 +13,13 @@ class Interface
 
   private 
   def black_jack!  
-    puts "Game is start"
-    i = 1
+    puts "Game is start"    
     loop do
       @game.start_round()
-      puts "Raund #{i}"
       @game.finish_raund() if @game.finish_raund?      
       @game.show_cards(true)
       @game.make_move(@game.player)
       @game.make_move(@game.dealer)
-      i += 1
       @game.finish_raund() if @game.finish_raund?      
     end
   end

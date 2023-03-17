@@ -5,4 +5,4 @@ require_relative "player"
 require_relative "dealer"
 
 @interface = Interface.new
-@interface.select_do
+@interface.black_jack!()

@@ -8,6 +8,7 @@ class Game < BlackJeckCore
 
   def initialize
     super
+    puts "1f"
     puts 'Enter your name:'
     player_name = gets.chomp
     @player = Player.new(player_name)
@@ -19,6 +20,9 @@ class Game < BlackJeckCore
   end
 
   def start_round
+    puts "start raund"
+    puts "2f"
+    
     full_deck_cards()
     @player.clean_hend
     @dealer.clean_hend
@@ -30,11 +34,15 @@ class Game < BlackJeckCore
   end
 
   def show_cards(hide_dealer_cards)
+    puts "3f"
+
     puts "#{@dealer.name} cards on hand: #{cards_on_hand(@dealer.hend, hide_dealer_cards)}"
     puts "#{@player.name} cards on hand: #{cards_on_hand(@player.hend)}"
   end
   
   def cards_on_hand(cards, close_card = false)
+    puts "4f"
+    
     s_out = ""
     point_counts = 0
 
@@ -50,7 +58,10 @@ class Game < BlackJeckCore
   end
 
   def make_move(player)
+    puts "5f"
+
     return player.move_action(self) if player.name == 'dealer'
+    puts "5.1f"
    
     puts ''
     puts 'You step!!!'
@@ -78,6 +89,8 @@ class Game < BlackJeckCore
   end
 
   def finish_raund?
+    puts "6f"
+
     return true if @player.hend.count == 3 && @dealer.hend.count == 3
     return true if @decision_finish_raund_dealer && @decision_finish_raund_player     
     return true if @player.count_pionts > 21
@@ -85,6 +98,8 @@ class Game < BlackJeckCore
   end
 
   def finish_raund()
+    puts "7f"
+
     @decision_finish_raund_dealer = false
     @decision_finish_raund_player = false
     show_cards(false)
@@ -105,10 +120,15 @@ class Game < BlackJeckCore
     @player.hend = []
     @dealer.hend = []
 
-    bb = gets
+    exit_game() if @dealer.wallet < 10 || @player.wallet < 10
+    puts 'Enter "end" if you want to finish the game if not enter enything.'    
+    finish_game = gets.chomp.downcase!
+    exit_game() if finish_raund == 'end' 
   end
 
   def winner
+    puts "8f"
+
     if @player.count_pionts > 21 && @dealer.count_pionts > 21
       if @dealer.count_pionts > @player.count_pionts 
         return @dealer
@@ -127,6 +147,8 @@ class Game < BlackJeckCore
   end
 
   def winner(player_points = @player.count_pionts, dealer_points = @dealer.count_pionts)
+    puts "9f"
+
     if player_points > 21 || dealer_points > 21
       return @dealer if player_points < dealer_points
       return @player if player_points > dealer_points    
@@ -143,22 +165,32 @@ class Game < BlackJeckCore
     end
   end
 
-def output_resault()
-  result = {
-    'draw' => '-----------Draw-------------',
-    @player => '-----------YOU WIN-------------',
-    !@player => '-----------Dealer wins----------'
-  }[winner()]
+  def output_resault()
+    puts "10f"
 
-  puts result
-  wallet_plaers()
-end
+    result = {
+      'draw' => '-----------Draw-------------',
+      @player => '-----------YOU WIN-------------',
+      !@player => '-----------Dealer wins----------'
+    }[winner()]
+
+    puts result
+    wallet_plaers()
+  end
 
   def wallet_plaers
+    puts "11f"
+
     puts "#{@dealer.name} have on wallet #{@dealer.wallet}$"    
     puts "#{@player.name} have on wallet #{@player.wallet}$"
     puts '----------------------------'
   end
 
-  # додати рышення закынчити раунд
+  def exit_game()
+    puts "12f"
+
+    puts 'Game is finish'
+    wallet_plaers()
+    exit
+  end
 end
