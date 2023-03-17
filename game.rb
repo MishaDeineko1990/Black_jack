@@ -1,18 +1,18 @@
 require_relative 'black_jeck_core'
 require_relative 'player'
-require_relative 'diler'
+require_relative 'dealer'
 
 class Game < BlackJeckCore
-  attr_reader :player, :diler
-  attr_accessor :move_players, :decision_finish_raund_diler
+  attr_reader :player, :dealer
+  attr_accessor :move_players, :decision_finish_raund_dealer
 
   def initialize
     super
     puts 'Enter your name:'
     player_name = gets.chomp
     @player = Player.new(player_name)
-    @diler = Diler.new
-    @decision_finish_raund_diler =  false
+    @dealer = Dealer.new
+    @decision_finish_raund_dealer =  false
     @decision_finish_raund_player =  false
     @count_pass = 0
 
@@ -21,16 +21,16 @@ class Game < BlackJeckCore
   def start_round
     full_deck_cards()
     @player.clean_hend
-    @diler.clean_hend
+    @dealer.clean_hend
     2.times { @player.add_card(get_card) }
-    2.times { @diler.add_card(get_card) }
+    2.times { @dealer.add_card(get_card) }
     @player.send_money(10)
-    @diler.send_money(10)
+    @dealer.send_money(10)
     @bank = 20
   end
 
-  def show_cards(hide_diler_cards)
-    puts "#{@diler.name} cards on hand: #{cards_on_hand(@diler.hend, hide_diler_cards)}"
+  def show_cards(hide_dealer_cards)
+    puts "#{@dealer.name} cards on hand: #{cards_on_hand(@dealer.hend, hide_dealer_cards)}"
     puts "#{@player.name} cards on hand: #{cards_on_hand(@player.hend)}"
   end
   
@@ -50,7 +50,7 @@ class Game < BlackJeckCore
   end
 
   def make_move(player)
-    return player.move_action(self) if player.name == 'Diler'
+    return player.move_action(self) if player.name == 'dealer'
    
     puts ''
     puts 'You step!!!'
@@ -78,24 +78,24 @@ class Game < BlackJeckCore
   end
 
   def finish_raund?
-    return true if @player.hend.count == 3 && @diler.hend.count == 3
-    return true if @decision_finish_raund_diler && @decision_finish_raund_player     
+    return true if @player.hend.count == 3 && @dealer.hend.count == 3
+    return true if @decision_finish_raund_dealer && @decision_finish_raund_player     
     return true if @player.count_pionts > 21
     return false
   end
 
   def finish_raund()
-    @decision_finish_raund_diler = false
+    @decision_finish_raund_dealer = false
     @decision_finish_raund_player = false
     show_cards(false)
     case winner()
     when 'draw'
       @player.get_money(@bank / 2)
-      @diler.get_money(@bank / 2)
+      @dealer.get_money(@bank / 2)
     when @player
       @player.get_money(@bank) 
     else
-      @diler.get_money(@bank) 
+      @dealer.get_money(@bank) 
     end
 
     output_resault() 
@@ -103,46 +103,59 @@ class Game < BlackJeckCore
     @bank = 0    
     @deck_cards = []
     @player.hend = []
-    @diler.hend = []
+    @dealer.hend = []
 
     bb = gets
   end
 
   def winner
-    if @player.count_pionts > 21 && @diler.count_pionts > 21
-      if @diler.count_pionts > @player.count_pionts 
-        return @diler
+    if @player.count_pionts > 21 && @dealer.count_pionts > 21
+      if @dealer.count_pionts > @player.count_pionts 
+        return @dealer
       else
         return @player
       end
-    elsif @player.count_pionts == @diler.count_pionts
+    elsif @player.count_pionts == @dealer.count_pionts
       return 'draw'
-    elsif @player.count_pionts < 21 && @diler.count_pionts > 21
+    elsif @player.count_pionts < 21 && @dealer.count_pionts > 21
       return @player
-    elsif 21 - @player.count_pionts < 21 - @diler.count_pionts
+    elsif 21 - @player.count_pionts < 21 - @dealer.count_pionts
       return @player
     else
-      return @diler
+      return @dealer
     end
   end
 
-  def output_resault()
-    
-    case winner()
-    when 'draw'
-      puts '-----------Draw-------------'
-      wallet_plaers()      
-    when @player
-      puts '-----------YOU WINN-------------'
-      wallet_plaers() 
+  def winner(player_points = @player.count_pionts, dealer_points = @dealer.count_pionts)
+    if player_points > 21 || dealer_points > 21
+      return @dealer if player_points < dealer_points
+      return @player if player_points > dealer_points    
+    elsif player_points > 21
+      return @dealer
+    elsif dealer_points > 21
+      return @player
+    elsif player_points == dealer_points
+      return 'draw'
+    elsif player_points > dealer_points
+      return @player
     else
-      puts '-----------Diler win-------------'
-      wallet_plaers()
+      return @dealer
     end
   end
+
+def output_resault()
+  result = {
+    'draw' => '-----------Draw-------------',
+    @player => '-----------YOU WIN-------------',
+    !@player => '-----------Dealer wins----------'
+  }[winner()]
+
+  puts result
+  wallet_plaers()
+end
 
   def wallet_plaers
-    puts "#{@diler.name} have on wallet #{@diler.wallet}$"    
+    puts "#{@dealer.name} have on wallet #{@dealer.wallet}$"    
     puts "#{@player.name} have on wallet #{@player.wallet}$"
     puts '----------------------------'
   end

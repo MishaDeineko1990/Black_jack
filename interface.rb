@@ -21,7 +21,7 @@ class Interface
       @game.finish_raund() if @game.finish_raund?      
       @game.show_cards(true)
       @game.make_move(@game.player)
-      @game.make_move(@game.diler)
+      @game.make_move(@game.dealer)
       i += 1
       @game.finish_raund() if @game.finish_raund?      
     end

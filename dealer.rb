@@ -1,18 +1,18 @@
 require_relative "player"
 
-class Diler < Player
+class Dealer < Player
   def initialize
-    super("Diler")
+    super("dealer")
   end
 
   def move_action(game)
-    return if game.decision_finish_raund_diler
+    return if game.decision_finish_raund_dealer
 
     take_card = false
 
     @points = 0
 
-    game.diler.hend.each {|i| @points += i[1]}
+    game.dealer.hend.each {|i| @points += i[1]}
 
     case @points
     when 0..9
@@ -26,6 +26,6 @@ class Diler < Player
     end
 
     take_card && self.hend.count < 3 ? self.add_card(game.get_card) : nil
-    game.decision_finish_raund_diler = true
+    game.decision_finish_raund_dealer = true
   end
 end
