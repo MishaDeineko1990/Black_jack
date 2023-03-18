@@ -1,20 +1,20 @@
 class Player
   attr_reader :name, :wallet
   attr_accessor :hend
-  
+
   def initialize(name)
     @name = name
     @wallet = 100
     @hend = []
   end
 
-  def count_pionts
+  def count_points
     points = 0
-    @hend.each {|i| points += i[1]}
-    points  
+    @hend.each { |i| points += i[1] }
+    points
   end
 
-  def clean_hend()
+  def clean_hend
     @hend = []
   end
 

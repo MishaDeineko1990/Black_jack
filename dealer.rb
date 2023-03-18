@@ -1,8 +1,8 @@
-require_relative "player"
+require_relative 'player'
 
 class Dealer < Player
   def initialize
-    super("dealer")
+    super('dealer')
   end
 
   def move_action(game)
@@ -12,7 +12,7 @@ class Dealer < Player
 
     @points = 0
 
-    game.dealer.hend.each {|i| @points += i[1]}
+    game.dealer.hend.each { |i| @points += i[1] }
 
     case @points
     when 0..9
@@ -25,7 +25,7 @@ class Dealer < Player
       take_card = rand < 0.2
     end
 
-    take_card && self.hend.count < 3 ? self.add_card(game.get_card) : nil
+    take_card && hend.count < 3 ? add_card(game.get_card) : nil
     game.decision_finish_raund_dealer = true
   end
 end
