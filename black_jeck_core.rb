@@ -7,24 +7,25 @@ class BlackJeckCore
   end
 
   def get_card # //core
-    card = @deck_cards.sample
-    @deck_cards.delete(card)
+    card = @deck_cards.last
+    @deck_cards.pop
     card
   end
 
   protected
 
   def full_deck_cards
-    (2..10).each do |i|
-      %w[♠ ♥ ♦ ♣].each do |i2|
-        @deck_cards << [i.to_s + i2, i]
+    (2..10).each do |name|
+      %w[♠ ♥ ♦ ♣].each do |suit|
+        @deck_cards <<  { name: name.to_s + suit, point: name }
       end
     end
 
-    %w[J Q K A].each do |i|
-      %w[♠ ♥ ♦ ♣].each do |i2|
-        @deck_cards << [i + i2, i == 'A' ? 11 : 10]
+    %w[J Q K A].each do |name|
+      %w[♠ ♥ ♦ ♣].each do |suit|
+        @deck_cards << { name: name + suit, point: name == 'A' ? 11 : 10 }
       end
     end
+    @deck_cards.shuffle!
   end
 end

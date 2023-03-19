@@ -10,11 +10,9 @@ class Dealer < Player
 
     take_card = false
 
-    @points = 0
+    points = game.dealer.count_points
 
-    game.dealer.hend.each { |i| @points += i[1] }
-
-    case @points
+    case points
     when 0..9
       take_card = true
     when 10..11

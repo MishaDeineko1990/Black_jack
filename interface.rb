@@ -3,16 +3,9 @@ require_relative 'game'
 class Interface
   def initialize
     @game = Game.new
-    black_jack
   end
-
+  
   def black_jack
-    black_jack!
-  end
-
-  private
-
-  def black_jack!
     puts 'Game is start'
     loop do
       puts '-------------------------'

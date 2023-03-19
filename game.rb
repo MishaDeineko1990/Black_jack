@@ -38,11 +38,11 @@ class Game < BlackJeckCore
     point_counts = 0
 
     if close_card
-      s_out = '[*] ' * cards.count
+      s_out = '[**] ' * cards.count
     else
-      cards.each do |i|
-        s_out += "[#{i[0]}] "
-        point_counts += i[1]
+      cards.each do |card|
+        s_out += "[#{card[:name]}] "
+        point_counts += card[:point]
       end
       "#{s_out}#{point_counts}"
     end

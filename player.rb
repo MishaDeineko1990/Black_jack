@@ -9,9 +9,7 @@ class Player
   end
 
   def count_points
-    points = 0
-    @hend.each { |i| points += i[1] }
-    points
+    points = @hend.sum { |card| card[:point] }
   end
 
   def clean_hend
