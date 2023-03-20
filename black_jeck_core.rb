@@ -6,10 +6,8 @@ class BlackJeckCore
     @bank = 0
   end
 
-  def get_card # //core
-    card = @deck_cards.last
+  def get_card
     @deck_cards.pop
-    card
   end
 
   protected
