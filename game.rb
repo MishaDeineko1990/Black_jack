@@ -1,8 +1,8 @@
-require_relative 'black_jeck_core'
+require_relative 'deck'
 require_relative 'player'
 require_relative 'dealer'
 
-class Game < BlackJeckCore
+class Game < Deck
   attr_reader :player, :dealer
   attr_accessor :move_players, :decision_finish_raund_dealer
 

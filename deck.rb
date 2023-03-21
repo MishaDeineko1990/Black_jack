@@ -1,9 +1,11 @@
-class BlackJeckCore
+class Deck
   attr_accessor :deck_cards, :bank
 
   def initialize
     @deck_cards = []
     @bank = 0
+    TEN = 10
+    ELEVEN = 11
   end
 
   def get_card # //core
@@ -23,7 +25,7 @@ class BlackJeckCore
 
     %w[J Q K A].each do |name|
       %w[♠ ♥ ♦ ♣].each do |suit|
-        @deck_cards << { name: name + suit, point: name == 'A' ? 11 : 10 }
+        @deck_cards << { name: name + suit, point: name == 'A' ? ELEVEN : TEN }
       end
     end
     @deck_cards.shuffle!

@@ -5,7 +5,7 @@ class Dealer < Player
     super('dealer')
   end
 
-  def move_action(game)
+  def decide_dealer_move(game) #
     return if game.decision_finish_raund_dealer
 
     take_card = false
