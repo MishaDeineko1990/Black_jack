@@ -2,10 +2,12 @@ require_relative 'game'
 
 class Interface
   def initialize
-    @game = Game.new
   end
   
   def black_jack
+    puts 'Enter your name:'
+    player_name = gets.chomp
+    @game = Game.new(player_name)
     puts 'Game is start'
     loop do
       puts '-------------------------'
