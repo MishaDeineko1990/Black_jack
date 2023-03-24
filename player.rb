@@ -6,7 +6,7 @@ class Player
     @name = name
     @wallet = 100
     @hend = []
-    @@MAX_COUNT_CARDS ||= 3
+    @MAX_COUNT_CARDS ||= 3
   end
 
   def count_points

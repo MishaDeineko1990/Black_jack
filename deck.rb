@@ -2,8 +2,8 @@ class Deck
   attr_accessor :deck_cards, :bank
 
   def initialize
-    @@TEN ||= 10
-    @@ELEVEN ||= 11
+    @TEN ||= 10
+    @ELEVEN ||= 11
     @deck_cards = []
     @bank = 0
   end
@@ -23,7 +23,7 @@ class Deck
 
     %w[J Q K A].each do |name|
       %w[♠ ♥ ♦ ♣].each do |suit|
-        @deck_cards << { name: name + suit, point: name == 'A' ? @@ELEVEN : @@TEN }
+        @deck_cards << { name: name + suit, point: name == 'A' ? @ELEVEN : @TEN }
       end
     end
     @deck_cards.shuffle!

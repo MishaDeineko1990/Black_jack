@@ -23,7 +23,7 @@ class Dealer < Player
       take_card = rand < 0.2
     end
 
-    take_card && hend.count < @@MAX_COUNT_CARDS ? add_card(game.get_card) : nil
+    take_card && hend.count < @MAX_COUNT_CARDS ? add_card(game.get_card) : nil
     game.decision_finish_raund_dealer = true
   end
 end
