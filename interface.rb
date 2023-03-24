@@ -15,8 +15,8 @@ class Interface
       @game.start_round
       @game.finish_raund if @game.finish_raund?
       @game.show_cards(true)
-      @game.make_move(@game.player)
-      @game.make_move(@game.dealer)
+      @game.decide_dealer_move(@game.player)
+      @game.decide_dealer_move(@game.dealer)
       @game.finish_raund if @game.finish_raund?
     end
   end
