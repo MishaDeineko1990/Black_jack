@@ -16,7 +16,7 @@ class Game < Deck
     @dealer = Dealer.new
     @decision_finish_raund_dealer =  false
     @decision_finish_raund_player =  false
-    @count_pass = 0
+    @player_pass = false
   end
 
   def start_round
@@ -58,7 +58,7 @@ class Game < Deck
     puts '-----------------------'
     puts 'Write 1 to open cards'
     puts 'Write 2 to take card' if player.hend.count < @MAX_COUNT_CARDS
-    puts 'Write 3 to pass' if player.hend.count < @MAX_COUNT_CARDS || @count_pass != 1
+    puts 'Write 3 to pass' if player.hend.count < @MAX_COUNT_CARDS || !@player_pass 
     choice = gets.chomp
 
     case choice
@@ -70,10 +70,12 @@ class Game < Deck
       @decision_finish_raund_player = true
       nil
     when '3'
-      @count_pass = 1
+      @decision_finish_raund_player = true
+      @player_pass = true
       nil
     else
       puts 'Invalid input. Please try again.'
+      decide_dealer_move(player)
     end
   end
 
@@ -105,6 +107,7 @@ class Game < Deck
     @deck_cards = []
     @player.hend = []
     @dealer.hend = []
+    @player_pass = false
 
     exit_game if @dealer.wallet < @BET_FOR_RAUND || @player.wallet < @BET_FOR_RAUND
     puts 'Enter "end" if you want to finish the game if not enter enything.'

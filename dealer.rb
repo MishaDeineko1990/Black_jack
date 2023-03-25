@@ -12,7 +12,7 @@ class Dealer < Player
 
     points = game.dealer.count_points
 
-    case points
+    case points #simulate dealer decides take card
     when 0..9
       take_card = true
     when 10..11
@@ -23,7 +23,7 @@ class Dealer < Player
       take_card = rand < 0.2
     end
 
-    take_card && hend.count < @MAX_COUNT_CARDS ? add_card(game.get_card) : nil
+    take_card && hend.count < @MAX_COUNT_CARDS ? add_card(game.get_card) : nil # If the player decides to take a card, add the card to the dealer's hand
     game.decision_finish_raund_dealer = true
   end
 end

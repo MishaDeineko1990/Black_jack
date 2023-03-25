@@ -1,8 +1,6 @@
 require_relative 'game'
 
 class Interface
-  def initialize
-  end
   
   def black_jack
     puts 'Enter your name:'
