@@ -1,6 +1,8 @@
 require_relative 'player'
 
 class Dealer < Player
+  MAX_COUNT_CARDS = 3
+
   def initialize
     super('dealer')
   end
@@ -23,7 +25,7 @@ class Dealer < Player
       take_card = rand < 0.2
     end
 
-    take_card && hend.count < @MAX_COUNT_CARDS ? add_card(game.get_card) : nil # If the player decides to take a card, add the card to the dealer's hand
+    take_card && hend.count < MAX_COUNT_CARDS ? add_card(game.get_card) : nil # If the player decides to take a card, add the card to the dealer's hand
     game.decision_finish_raund_dealer = true
   end
 end

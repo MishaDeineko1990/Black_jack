@@ -1,9 +1,10 @@
 class Deck
   attr_accessor :deck_cards, :bank
+  
+  TEN_POINTS = 10
+  ELEVEN_POINTS = 11
 
   def initialize
-    @TEN_POINTS ||= 10
-    @ELEVEN_POINTS ||= 11
     @deck_cards = []
     @bank = 0
   end
